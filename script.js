@@ -5,7 +5,7 @@ const isNumber = function (num) {
 };
 const decorator = function () {
   let n = Math.round(Math.random() * 100);
-  let trySteps = 3;
+  let trySteps = 10;
   const playNumberGame = function playNumberGame() {
     if (trySteps === 0) {
       let gameAgain = confirm("Попытки закончились, хотите сыграть еще?");
@@ -30,7 +30,15 @@ const decorator = function () {
       }
     } while (!isNumber(testDigit));
     if (n == testDigit) {
-      alert(`Поздравляю, Вы угадали!!!`);
+      let gameAgain = confirm(
+        `Поздравляю, Вы угадали!!! Хотели бы сыграть еще?`
+      );
+      if (gameAgain) {
+        trySteps = 10;
+        n = Math.round(Math.random() * 100);
+        playNumberGame();
+      }
+      return;
     } else if (n > testDigit) {
       trySteps = trySteps - 1;
       alert(`Загаданное число больше, осталось попыток ${trySteps}`);
