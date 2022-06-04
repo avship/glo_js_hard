@@ -10,11 +10,25 @@ const week = [
   "Воскресенье",
 ];
 
-const workingDays =
-  "<p>" + week.slice(0, week.length - 2).join(`</p>\n<p>`) + "</p>\n";
-const weekend =
-  "<p><i>" +
-  week.slice(week.length - 2, week.length).join(`</i></p>\n<p><i>`) +
-  "</i></p>";
+let currentDate = new Date().getDay();
+if (currentDate === 0) {
+  currentDate = 6;
+} else {
+  currentDate -= 1;
+}
+for (let i = 0; i < week.length; i++) {
+  let tmpBegin = "<p>";
+  let tmpEnd = "</p>";
+  if (i >= 5) {
+    tmpBegin += "<i>";
+    tmpEnd = "</i>" + tmpEnd;
+  }
+  if (i === currentDate) {
+    tmpBegin += "<b>";
+    tmpEnd = "</b>" + tmpEnd;
+  }
+  week[i] = tmpBegin + week[i] + tmpEnd;
+}
 
-document.querySelector("#days").innerHTML = workingDays + weekend;
+document.querySelector("#days").innerHTML = week.join("\n");
+//console.log(currentDate, week);
