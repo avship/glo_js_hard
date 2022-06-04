@@ -1,58 +1,20 @@
 "use strict";
-const isNumber = function (num) {
-  num = String(num);
-  return num.match(/^\d+(\.\d+)?$/) !== null;
-};
-const decorator = function () {
-  let n = Math.round(Math.random() * 100);
-  let trySteps = 10;
-  const playNumberGame = function playNumberGame() {
-    if (trySteps === 0) {
-      let gameAgain = confirm("Попытки закончились, хотите сыграть еще?");
-      if (gameAgain) {
-        trySteps = 10;
-        n = Math.round(Math.random() * 100);
-        playNumberGame();
-      }
-      return;
-    }
 
-    let testDigit = null;
-    do {
-      testDigit = prompt("Отгадайте число от 1 до 100");
-      if (testDigit === null) {
-        alert("Игра окончена!");
-        return;
-      }
-      console.log(testDigit);
-      if (!isNumber(testDigit)) {
-        alert("Введи число!!!");
-      }
-    } while (!isNumber(testDigit));
-    if (n == testDigit) {
-      let gameAgain = confirm(
-        `Поздравляю, Вы угадали!!! Хотели бы сыграть еще?`
-      );
-      if (gameAgain) {
-        trySteps = 10;
-        n = Math.round(Math.random() * 100);
-        playNumberGame();
-      }
-      return;
-    } else if (n > testDigit) {
-      trySteps = trySteps - 1;
-      alert(`Загаданное число больше, осталось попыток ${trySteps}`);
+const week = [
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+  "Воскресенье",
+];
 
-      playNumberGame();
-    } else {
-      trySteps = trySteps - 1;
-      alert(`Загаданное число меньше, осталось попыток ${trySteps}`);
+const workingDays =
+  "<p>" + week.slice(0, week.length - 2).join(`</p>\n<p>`) + "</p>\n";
+const weekend =
+  "<p><i>" +
+  week.slice(week.length - 2, week.length).join(`</i></p>\n<p><i>`) +
+  "</i></p>";
 
-      playNumberGame();
-    }
-  };
-  return playNumberGame;
-};
-//console.log(isNumber(null));
-const gameFunc = decorator();
-gameFunc();
+document.querySelector("#days").innerHTML = workingDays + weekend;
