@@ -1,50 +1,40 @@
-let now = new Date();
-let options = {
-  //era: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  weekday: "long",
-  timezone: "UTC",
-  // hour: "numeric",
-  // minute: "numeric",
-  // second: "numeric",
-};
-let formattedDate = now
-  .toLocaleString("ru", options)
-  .replace("г.", "года")
-  .replace("  ", " ");
-function hourFormatter(now) {
-  if (now.getHours() % 10 == 1) {
-    return "час";
-  }
-  if (now.getHours() < 5 && Math.floor(now.getHours() / 10)) return "часа";
-  return "часов";
-}
-function minuteFormatter(now) {
-  if (now.getMinutes() % 10 == 1) {
-    return "минута";
-  }
-  if (now.getMinutes() % 10 < 5 && now.getMinutes() % 10 > 0) {
-    return "минуты";
-  }
-  return "минут";
-}
-function secondsFormatter(now) {
-  if (now.getSeconds() % 10 == 1) {
-    return "секунда";
-  }
-  if (now.getSeconds() % 10 < 5 && now.getSeconds() % 10 > 0) {
-    return "секунды";
-  }
-  return "секунд";
-}
-const hour = `${now.getHours()} ${hourFormatter(now)}`;
-const minutes = `${now.getMinutes()} ${minuteFormatter(now)}`;
-const seconds = `${now.getSeconds()} ${secondsFormatter(now)}`;
-//a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'
-console.log(`Сегодня ${formattedDate} ${hour} ${minutes} ${seconds}`);
+function declensionMaker(num, word) {
+  const chas = ["час", "часа", "часов"];
+  const minute = ["минута", "минут", "минуты"];
+  const secunds = ["секунда", "секунды", "секунд"];
 
+  const dozens = Math.floor(num / 10);
+  num = num % 10;
+  if (word === "час") {
+    if (num === 1) {
+      return chas[0];
+    } else if (num < 5) {
+      return chas[1];
+    } else {
+      return chas[2];
+    }
+  }
+  if (word === "минута") {
+    if (num == 1) {
+      return minute[0];
+    } else if (num < 5 && num > 1) {
+      return minute[2];
+    } else {
+      return minute[1];
+    }
+  }
+  if (word === "секунда") {
+    if (num === 1) {
+      return secunds[0];
+    } else if ((num > 1) & (num < 5)) {
+      return secunds[1];
+    } else {
+      return secunds[2];
+    }
+  }
+}
+//a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'
+//console.log(`Сегодня ${formattedDate} ${hour} ${minutes} ${seconds}`);
 //б) '04.02.2020 - 21:05:33'
 function addZeroToDateValues() {
   const date = new Date();
@@ -61,8 +51,40 @@ function addZeroToDateValues() {
 }
 console.log(addZeroToDateValues());
 function clock() {
-  const dateDOM = document.querySelector("#days");
-  dateDOM.textContent = addZeroToDateValues();
+  const dateDOM1 = document.querySelector("#days");
+  const dateDOM2 = document.querySelector("#another_format");
+  dateDOM1.textContent = addZeroToDateValues();
+
+  let currentDate = new Date();
+  let options = {
+    //era: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+    timezone: "UTC",
+    // hour: "numeric",
+    // minute: "numeric",
+    // second: "numeric",
+  };
+  let formattedDate = currentDate
+    .toLocaleString("ru", options)
+    .replace("г.", "года")
+    .replace("  ", " ");
+  const hour = `${currentDate.getHours()} ${declensionMaker(
+    currentDate.getHours(),
+    "час"
+  )}`;
+  const minutes = `${currentDate.getMinutes()} ${declensionMaker(
+    currentDate.getMinutes(),
+    "минута"
+  )}`;
+  const seconds = `${currentDate.getSeconds()} ${declensionMaker(
+    currentDate.getSeconds(),
+    "секунда"
+  )}`;
+  //a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'
+  dateDOM2.textContent = `Сегодня ${formattedDate} ${hour} ${minutes} ${seconds}`;
 }
 
 setInterval(clock, 1000);
