@@ -1,37 +1,11 @@
-function declensionMaker(num, word) {
-  const chas = ["час", "часа", "часов"];
-  const minute = ["минута", "минут", "минуты"];
-  const secunds = ["секунда", "секунды", "секунд"];
-
-  const dozens = Math.floor(num / 10);
-  num = num % 10;
-  if (word === "час") {
-    if (num === 1) {
-      return chas[0];
-    } else if (num < 5) {
-      return chas[1];
-    } else {
-      return chas[2];
-    }
+function declensionMaker(num, ar) {
+  if (num === 1) {
+    return ar[1];
   }
-  if (word === "минута") {
-    if (num == 1) {
-      return minute[0];
-    } else if (num < 5 && num > 1) {
-      return minute[2];
-    } else {
-      return minute[1];
-    }
+  if ((num > 1) & (num < 5)) {
+    return ar[2];
   }
-  if (word === "секунда") {
-    if (num === 1) {
-      return secunds[0];
-    } else if ((num > 1) & (num < 5)) {
-      return secunds[1];
-    } else {
-      return secunds[2];
-    }
-  }
+  return ar[0];
 }
 //a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'
 //console.log(`Сегодня ${formattedDate} ${hour} ${minutes} ${seconds}`);
@@ -71,17 +45,22 @@ function clock() {
     .toLocaleString("ru", options)
     .replace("г.", "года")
     .replace("  ", " ");
+
+  const chasAr = ["часов", "час", "часа"];
+  const minuteAr = ["минут", "минута", "минуты"];
+  const secundsAr = ["секунд", "секунда", "секунды"];
+
   const hour = `${currentDate.getHours()} ${declensionMaker(
-    currentDate.getHours(),
-    "час"
+    currentDate.getHours() % 10,
+    chasAr
   )}`;
   const minutes = `${currentDate.getMinutes()} ${declensionMaker(
-    currentDate.getMinutes(),
-    "минута"
+    currentDate.getMinutes() % 10,
+    minuteAr
   )}`;
   const seconds = `${currentDate.getSeconds()} ${declensionMaker(
-    currentDate.getSeconds(),
-    "секунда"
+    currentDate.getSeconds() % 10,
+    secundsAr
   )}`;
   //a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'
   dateDOM2.textContent = `Сегодня ${formattedDate} ${hour} ${minutes} ${seconds}`;
